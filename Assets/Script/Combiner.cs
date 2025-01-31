@@ -5,21 +5,24 @@ using UnityEngine;
 
 public class Combiner : MonoBehaviour
 {
-    public List<string> ContainItemsId = new List<string>();
+    public List<string> containItemsId = new List<string>();
     bool isActivating = false;
 
-    public short ContainItemsMax = 2;
-    public float ActivationTime = 4f;
-    float ActivationTimer = 0f;
+    public short containItemsMax = 2;
+    public List<IItem> itemList = new List<IItem>();
 
-    public GameObject CombinePrefab;
+    public string recipes;
+    public IItem[] recipeResult;
+
+    public float activationTime = 4f;
+    float activationTimer = 0f;
 
     public void Take(GameObject gameObject)
     {
-        if(ContainItemsId.Count < ContainItemsMax)
+        if(containItemsId.Count < containItemsMax)
         {
-            ContainItemsId.Add(gameObject.GetComponent<Item>().Id);
-            if (ContainItemsId.Count != 0)
+            containItemsId.Add(gameObject.GetComponent<IItem>().Id);
+            if (containItemsId.Count != 0)
             {
                 isActivating = true;
             }
@@ -32,15 +35,15 @@ public class Combiner : MonoBehaviour
     {
         if (isActivating)
         {
-            if(ActivationTimer < ActivationTime)
+            if(activationTimer < activationTime)
             {
-                ActivationTimer += Time.deltaTime;
-                gameObject.GetComponent<Renderer>().material.color = Color.Lerp(Color.red, Color.green, ActivationTimer / ActivationTime);
+                activationTimer += Time.deltaTime;
+                gameObject.GetComponent<Renderer>().material.color = Color.Lerp(Color.red, Color.green, activationTimer / activationTime);
             }
             else
             {
                 
-                ActivationTimer = 0f;
+                activationTimer = 0f;
                 isActivating = false;
                 if (ConditionCheck())
                 {
@@ -51,7 +54,7 @@ public class Combiner : MonoBehaviour
                 {
                     gameObject.GetComponent<Renderer>().material.color = Color.red;
                 }
-                ContainItemsId.Clear();
+                containItemsId.Clear();
 
 
             }
@@ -60,7 +63,7 @@ public class Combiner : MonoBehaviour
 
     private bool ConditionCheck()
     {
-        if(ContainItemsId.FindAll(itemId => itemId == "10101").Count == 1 && ContainItemsId.FindAll(itemId => itemId == "10102").Count == 1)
+        if(containItemsId.FindAll(itemId => itemId == "10101").Count == 1 && containItemsId.FindAll(itemId => itemId == "10102").Count == 1)
         {
             return true;
         }
