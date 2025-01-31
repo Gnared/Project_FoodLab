@@ -1,10 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class HitBox : MonoBehaviour
 {
+    [Header("Editable")]
+    [SerializeField]
+    public string tagHit;
+
+    [Header("Debug")]
     Collider hitBox;
     public List<GameObject> hitItems = new List<GameObject>();
     protected void Start()
@@ -34,6 +38,15 @@ public class HitBox : MonoBehaviour
     protected void OnTriggerExit(Collider other)
     {
         hitItems.Remove(other.gameObject);
+    }
+
+    public GameObject HitInTag
+    {
+        get
+        {
+            return hitItems.Find(item => item.CompareTag(tagHit));
+
+        }
     }
 
 }

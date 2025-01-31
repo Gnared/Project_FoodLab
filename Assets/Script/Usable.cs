@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class Usable : IItem
 {
-    public void Use()
+    public override void Use()
     {
         Debug.Log("This item can Use");
     }
+
 }

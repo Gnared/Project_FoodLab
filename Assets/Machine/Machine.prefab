@@ -12,10 +12,10 @@ GameObject:
   - component: {fileID: 408632641519913341}
   - component: {fileID: 4079811444204667691}
   - component: {fileID: 5844882174493293921}
-  - component: {fileID: 1578406089436993115}
+  - component: {fileID: 5018040693537986189}
   m_Layer: 0
   m_Name: Machine
-  m_TagString: Combiner
+  m_TagString: Station
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -106,7 +106,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1578406089436993115
+--- !u!114 &5018040693537986189
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -115,8 +115,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 6571465594756608795}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9e89d7521f925e4ba3c6c7b84b60e73, type: 3}
+  m_Script: {fileID: 11500000, guid: fe5b1661173ccae49a5aa3e256666810, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ActivationTime: 4
-  CombinePrefab: {fileID: 1851383943216647617, guid: b00107d843a9fbf4ba1661bc10364a7c, type: 3}
+  recipeId: []
+  recipeResult: []
+  activationTime: 4
+  takeSubTypeList: 
+  takeTypeList: 
+  takeCountMax: 3
+  containItemsId:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  takeCount: 0
+  outputResult: {fileID: 0}

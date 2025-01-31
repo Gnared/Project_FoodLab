@@ -1,9 +1,12 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor;
+using UnityEditor.Build.Content;
 using UnityEngine;
 
-public class Machine : MonoBehaviour
+public class Machine : MonoBehaviour , IStation
 {
     EMachineState state;
 
@@ -14,7 +17,16 @@ public class Machine : MonoBehaviour
 
     public List<ESubType> takeSubTypeList;
     public List<EType> takeTypeList;
+
     public short takeCountMax = 3;
+
+    public ESubType ThirdSlotFixation = ESubType.Unknown;
+    public ESubType SecondSlotFixation = ESubType.Unknown;
+
+    public bool isSaltSea = false;
+
+    public Transform outputPlacement;
+
 
     [Header("Debug")]
     public Mundane[] containItemsId = new Mundane[3];
@@ -50,6 +62,22 @@ public class Machine : MonoBehaviour
         }
     }
 
+    public void Give(PlayerController taker)
+    {
+        if (outputResult != null && state == EMachineState.Finish)
+        {
+            var item = Instantiate(ItemManager.Instance.GetPrefabFromID(outputResult.Id), outputPlacement);
+            item.GetComponent<IItem>().Grabbed(taker.gameObject);
+            taker.Grab(item.GetComponent<IItem>());
+
+            outputResult = null;
+        }
+        if (state == EMachineState.Broken)
+        {
+            state = EMachineState.Normal;
+        }
+    }
+
     private void Update()
     {
         if (state == EMachineState.Normal)
@@ -68,6 +96,27 @@ public class Machine : MonoBehaviour
             }
             else
             {
+                for (int i = 0; i < containItemsId.Length; i++)
+                {
+                    if (containItemsId[i] == null)
+                    {
+                        if(i == 2 && SecondSlotFixation != ESubType.Unknown)
+                        {
+                            containItemsId[i] = ConditionSlot(SecondSlotFixation);
+                        }
+
+                        else if(i == 3 && ThirdSlotFixation != ESubType.Unknown)
+                        {
+                            containItemsId[i] = ConditionSlot(SecondSlotFixation);
+                        }
+
+                        else
+                        {
+                            containItemsId[i] = new Mundane("00000");
+                        }
+                    }
+                }
+
                 outputResult = RecipeCheck();
 
                 if (outputResult != null)
@@ -86,17 +135,29 @@ public class Machine : MonoBehaviour
             }
         }
     }
-    public void Give()
+
+    private Mundane ConditionSlot(ESubType slotFixation)
     {
-        if (outputResult != null && state == EMachineState.Finish)
+
+        string result = "00000";
+        if(slotFixation == ESubType.Light)
         {
-            // ยัด outputResult เข้ามือผู้เล่น
+            result = GameManager.Instance.isLightOn ? "00101": "00100";
         }
-        if(state == EMachineState.Broken)
+
+        else if(slotFixation == ESubType.Temperature)
         {
-            state = EMachineState.Normal;
+            result = GameManager.Instance.isTemperatureHot ? "00201" : "00200";
         }
+
+        else if(slotFixation == ESubType.Water)
+        {
+            result = isSaltSea ? "00301" : "00300";
+        }
+
+        return new Mundane(result);
     }
+
     public Mundane RecipeCheck()
     {
         string recipeCode = string.Empty;
@@ -116,5 +177,4 @@ public class Machine : MonoBehaviour
 
         return null;
     }
-
 }

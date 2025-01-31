@@ -7,6 +7,8 @@ TagManager:
   - Interactable
   - Pickable
   - Combiner
+  - Item
+  - Station
   layers:
   - Default
   - TransparentFX
