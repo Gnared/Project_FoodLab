@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2404433736121715638}
   - component: {fileID: 913006167532911273}
   m_Layer: 0
-  m_Name: Item
+  m_Name: Plate15
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -42,7 +42,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9059289279127431453}
-  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &1499683156891235692
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -63,7 +63,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 742e1f66b986ac4489e16a7eae5356b8, type: 2}
+  - {fileID: 2100000, guid: 8383d6c6839fc824b8551567d053f0d7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -118,9 +118,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbedb29b7a0d44c4eaf2f047a5fdfe56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 10101
-  nameItem: Blue Seed
-  type: 1
-  subType: 0
+  id: 40206
+  nameItem: Plate15
+  type: 4
+  subType: 8
   isGrabbed: 0
   grabber: {fileID: 0}
