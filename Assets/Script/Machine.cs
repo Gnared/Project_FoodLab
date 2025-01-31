@@ -76,6 +76,20 @@ public class Machine : MonoBehaviour , IStation
         {
             state = EMachineState.Normal;
         }
+        if(state == EMachineState.Normal)
+        {
+            foreach(var item in containItemsId)
+            {
+                if(item != null)
+                {
+                    var obj = Instantiate(ItemManager.Instance.GetPrefabFromID(item.Id), outputPlacement);
+                    item.GetComponent<IItem>().Grabbed(taker.gameObject);
+                    taker.Grab(item.GetComponent<IItem>());
+
+                    containItemsId[Array.IndexOf(containItemsId, item)] = null;
+                }
+            }
+        }
     }
 
     private void Update()
