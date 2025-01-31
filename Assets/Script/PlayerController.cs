@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Experimental.AI;
@@ -10,70 +11,97 @@ public class PlayerController : MonoBehaviour
     public float speed = 10f;
     public float facingSpeed = 10f;
 
-    GrabHitBox grabingBox;
+    HitBox itemTargetBox;
+    HitBox stationTargetBox;
 
     float controlX;
     float controlZ;
     float dashTimer = 0f;
     float dashCooldownTimer = 0f;
 
+    IItem targetItem = null;
+    IStation targetStation = null;
+
     bool isGrabing = false;
-    Grabable grabingItem;
+    IItem grabingItem;
+
+    Transform grabbedPos;
 
     Quaternion facing;
 
     void Awake()
     {
-        if(transform.Find("Grabing Box") != null)
+        if(transform.Find("Target Box") != null)
         {
-            grabingBox = transform.Find("Grabing Box").gameObject.GetComponent<GrabHitBox>();
-            Debug.Log("Player has Grabing Box");
+            itemTargetBox = Array.Find(transform.Find("Target Box").gameObject.GetComponents<HitBox>(), that => that.tagHit == "Item");
+            stationTargetBox = Array.Find(transform.Find("Target Box").gameObject.GetComponents<HitBox>(), that => that.tagHit == "Station");
+            Debug.Log("Player has Target Box");
         }
         else
         {
-            Debug.Log("Player has no Grabing Box");
+            Debug.Log("Player has no Target Box");
         }
+
+        grabbedPos = transform.Find("Hand").transform;
     }
 
     void Update()
     {
         if (grabingItem == null)
         {
-            isGrabing = false ;
+            isGrabing = false;
         }
 
-        if (grabingBox.hitItems.Count != 0)
-        {
-            if (grabingBox.Grabable != null)
-            {
-                Grabable grabableItem = grabingBox.Grabable.GetComponent<Grabable>();
-                if (!grabableItem.isGrabbed && isGrabing == false && Input.GetKeyDown(KeyCode.Space))
-                {
-                    grabableItem.Grabbed(gameObject);
-                    isGrabing = true;
-                    grabingItem = grabableItem;
-                }
-                else if (isGrabing == true && Input.GetKeyDown(KeyCode.Space))
-                {
-                    if (grabingBox.Combiner == null)
-                    {
-                        grabingItem.UnGrabbed();
-                        isGrabing = false;
-                    }
-                    else
-                    {
-                        Combiner combiner = grabingBox.Combiner.GetComponent<Combiner>();
-                        combiner.Take(grabingItem.gameObject);
-                    }
+        targetItem = itemTargetBox.HitInTag != null ? itemTargetBox.HitInTag.GetComponent<IItem>() : null ;
 
-                }
-            }
-            else
+        targetStation = stationTargetBox.HitInTag != null ? stationTargetBox.HitInTag.GetComponent<IStation>() : null;
+
+        if (targetItem != null || targetStation != null)
+        {
+            if (Input.GetKeyDown(KeyCode.Space)) 
             {
-                if (isGrabing == true && Input.GetKeyDown(KeyCode.Space))
+                ///
+                /// Pick
+                /// When There is TargetItem , No Grabing
+                /// 
+                /// Place
+                /// When There is Grabing , No TargetStation , Can't Use Item
+                /// 
+                /// Use
+                /// When There is Use Item
+                /// 
+                /// Take
+                /// When There is Grabing , TargetStation
+                /// 
+                /// Give
+                /// When There is TargetStation, no Grabing
+                ///
+
+                if (isGrabing && grabingItem.SubType == ESubType.Tool) // Use
+                {
+                    grabingItem.Use();
+                }
+
+                else if (isGrabing && targetStation != null) // Take
+                {
+                    targetStation.Take(grabingItem.GetComponent<Mundane>());
+                }
+
+                else if (!isGrabing && targetStation != null) // Give
+                {
+                    targetStation.Give(this);
+                }
+
+                else if (isGrabing && targetStation == null) // Place
                 {
                     grabingItem.UnGrabbed();
-                    isGrabing = false;
+                    Ungrab();
+                }
+
+                else if (targetItem != null && !targetItem.isGrabbed && !isGrabing) // Pick
+                {
+                    targetItem.Grabbed(gameObject);
+                    Grab(targetItem);
                 }
             }
 
@@ -108,5 +136,19 @@ public class PlayerController : MonoBehaviour
         {
             dashCooldownTimer -= Time.deltaTime;
         }
+    }
+
+    public void Grab(IItem targetItem)
+    {
+        isGrabing = true;
+        grabingItem = targetItem;
+
+        targetItem.gameObject.transform.position = grabbedPos.position;
+        targetItem.gameObject.transform.rotation = grabbedPos.rotation;
+    }
+    public void Ungrab()
+    {
+        isGrabing = false;
+        grabingItem = null;
     }
 }
