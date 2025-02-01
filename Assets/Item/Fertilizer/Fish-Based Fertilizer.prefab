@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 1499683156891235692}
   - component: {fileID: 2404433736121715638}
   - component: {fileID: 913006167532911273}
-  - component: {fileID: -4382246874098051609}
+  - component: {fileID: 3170569837534255376}
   m_Layer: 0
-  m_Name: Meat-Based Fertilizer
+  m_Name: Fish-Based Fertilizer
   m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -119,13 +119,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbedb29b7a0d44c4eaf2f047a5fdfe56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 10202
-  nameItem: Meat-Based Ferilizer
+  id: 10203
+  nameItem: Fish-Based Fertilizer
   type: 1
   subType: 1
   isGrabbed: 0
   grabber: {fileID: 0}
---- !u!54 &-4382246874098051609
+--- !u!54 &3170569837534255376
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

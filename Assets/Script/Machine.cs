@@ -12,13 +12,11 @@ public class Machine : MonoBehaviour , IStation
 
     [Header("Editable")]
     public string[] recipeId;
-    public Mundane[] recipeResult;
+    public string[] recipeResult;
     public float activationTime = 4f;
 
-    public List<ESubType> takeSubTypeList;
+    public ESubType[] takeSubTypeList;
     public List<EType> takeTypeList;
-
-    public short takeCountMax = 3;
 
     public ESubType ThirdSlotFixation = ESubType.Unknown;
     public ESubType SecondSlotFixation = ESubType.Unknown;
@@ -31,7 +29,7 @@ public class Machine : MonoBehaviour , IStation
     [Header("Debug")]
     public Mundane[] containItemsId = new Mundane[3];
     public short takeCount = 0;
-    public Mundane outputResult = null;
+    public string outputResult = null;
 
     float activationTimer = 0f;
 
@@ -43,7 +41,7 @@ public class Machine : MonoBehaviour , IStation
             {
                 if (item.Type == type)
                 {
-                    for (int i = 0; i < takeSubTypeList.Count; i++)
+                    for (int i = 0; i < takeSubTypeList.Length; i++)
                     {
                         if (item.SubType == takeSubTypeList[i])
                         {
@@ -66,11 +64,13 @@ public class Machine : MonoBehaviour , IStation
     {
         if (outputResult != null && state == EMachineState.Finish)
         {
-            var item = Instantiate(ItemManager.Instance.GetPrefabFromID(outputResult.Id), outputPlacement);
+            var item = Instantiate(ItemManager.Instance.GetPrefabFromID(outputResult), outputPlacement);
             item.GetComponent<IItem>().Grabbed(taker.gameObject);
             taker.Grab(item.GetComponent<IItem>());
 
             outputResult = null;
+
+            state = EMachineState.Normal;
         }
         if (state == EMachineState.Broken)
         {
@@ -96,7 +96,7 @@ public class Machine : MonoBehaviour , IStation
     {
         if (state == EMachineState.Normal)
         {
-            if (takeCount >= takeCountMax)
+            if (takeCount >= takeSubTypeList.Length)
             {
                 state = EMachineState.Working;
             }
@@ -172,7 +172,7 @@ public class Machine : MonoBehaviour , IStation
         return new Mundane(result);
     }
 
-    public Mundane RecipeCheck()
+    public string RecipeCheck()
     {
         string recipeCode = string.Empty;
 

@@ -7,36 +7,55 @@ public class ItemManager : MonoBehaviour
 {
     private static ItemManager instance;
 
-    public ItemManager()
-    {
-        if(instance != null && instance != this)
-        {
-            Destroy(this);
-        }
-    }
-
     public static ItemManager Instance
     {
         get
         {
-            if (instance == null) 
-            { 
-                instance = new ItemManager();
-            }
             return instance;
+        }
+    }
+
+    private void Awake()
+    {
+        if (instance != null && instance != this)
+        {
+            Destroy(instance);
+        }
+        else
+        {
+            instance = this;
         }
     }
 
     public GameObject[] prefabs;
 
-    public GameObject GetPrefabFromName(string name)
-    {
-        return prefabs.First(x => x.GetComponent<IItem>().Name == name);
-    }
+    //private void Awake()
+    //{
+    //    foreach (GameObject prefab in prefabs) 
+    //    {
+    //        Instantiate(prefab);
+        
+    //    }
+    //}
+
+    //public GameObject GetPrefabFromName(string name)
+    //{
+    //    return prefabs.First(x => x.GetComponent<IItem>().Name.Equals(name));
+    //}
 
     public GameObject GetPrefabFromID(string id)
     {
-        return prefabs.First(x => x.GetComponent<IItem>().Id == id);
+        foreach (var item in prefabs) 
+        {
+            if (item.GetComponent<IItem>().id.Equals(id))
+            {
+                return item;
+            }
+        }
+
+        Debug.Log("ItemManager can't find id");
+
+        return null;
     }
 
 }

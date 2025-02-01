@@ -19,11 +19,19 @@ internal class GameManager : MonoBehaviour
     {
         get
         {
-            if (instance == null)
-            {
-                instance = new GameManager();
-            }
             return instance;
+        }
+    }
+
+    private void Awake()
+    {
+        if (instance != null && instance != this)
+        {
+            Destroy(instance);
+        }
+        else
+        {
+            instance = this;
         }
     }
 
