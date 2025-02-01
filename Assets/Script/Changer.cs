@@ -13,7 +13,7 @@ public class Changer : MonoBehaviour, IStation
     public List<EType> takeTypeList;
     public float activationTime = 4f;
 
-    string containItemId = null;
+    public string containItemId = null;
 
     public string outputResult = null;
 
@@ -26,6 +26,8 @@ public class Changer : MonoBehaviour, IStation
         {
             outputResult = prefabId;
         }
+
+        containItemId = null;
     }
 
     public void Give(PlayerController taker)
@@ -37,6 +39,13 @@ public class Changer : MonoBehaviour, IStation
             taker.Grab(item.GetComponent<IItem>());
 
             outputResult = prefabId;
+
+            state = EMachineState.Normal;
+        }
+
+        if(state == EMachineState.Broken)
+        {
+            state = EMachineState.Normal;
         }
     }
 
@@ -56,6 +65,7 @@ public class Changer : MonoBehaviour, IStation
                             {
                                 containItemId = i.ToString();
                                 Destroy(item.gameObject);
+                                state = EMachineState.Working;
                             }
                         }
                     }

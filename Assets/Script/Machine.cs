@@ -27,7 +27,7 @@ public class Machine : MonoBehaviour , IStation
 
 
     [Header("Debug")]
-    public Mundane[] containItemsId = new Mundane[3];
+    public string[] containItemsId = new string[3];
     public short takeCount = 0;
     public string outputResult = null;
 
@@ -45,9 +45,9 @@ public class Machine : MonoBehaviour , IStation
                     {
                         if (item.SubType == takeSubTypeList[i])
                         {
-                            if (containItemsId[i] == null)
+                            if (containItemsId[i] == "")
                             {
-                                containItemsId[i] = item;
+                                containItemsId[i] = item.Id;
                                 Destroy(item.gameObject);
                                 takeCount++;
                             }
@@ -80,13 +80,15 @@ public class Machine : MonoBehaviour , IStation
         {
             foreach(var item in containItemsId)
             {
-                if(item != null)
+                if(item != "")
                 {
-                    var obj = Instantiate(ItemManager.Instance.GetPrefabFromID(item.Id), outputPlacement);
-                    item.GetComponent<IItem>().Grabbed(taker.gameObject);
-                    taker.Grab(item.GetComponent<IItem>());
+                    var obj = Instantiate(ItemManager.Instance.GetPrefabFromID(item), outputPlacement);
+                    obj.GetComponent<IItem>().Grabbed(taker.gameObject);
+                    taker.Grab(obj.GetComponent<IItem>());
 
-                    containItemsId[Array.IndexOf(containItemsId, item)] = null;
+                    containItemsId[Array.IndexOf(containItemsId, item)] = "";
+
+                    takeCount--;
                 }
             }
         }
@@ -112,26 +114,29 @@ public class Machine : MonoBehaviour , IStation
             {
                 for (int i = 0; i < containItemsId.Length; i++)
                 {
-                    if (containItemsId[i] == null)
+                    if (containItemsId[i] == "")
                     {
-                        if(i == 2 && SecondSlotFixation != ESubType.Unknown)
+                        if(i == 1 && SecondSlotFixation != ESubType.Unknown)
                         {
                             containItemsId[i] = ConditionSlot(SecondSlotFixation);
                         }
 
-                        else if(i == 3 && ThirdSlotFixation != ESubType.Unknown)
+                        else if(i == 2 && ThirdSlotFixation != ESubType.Unknown)
                         {
-                            containItemsId[i] = ConditionSlot(SecondSlotFixation);
+                            
+                            containItemsId[i] = ConditionSlot(ThirdSlotFixation);
                         }
 
                         else
                         {
-                            containItemsId[i] = new Mundane("00000");
+                            containItemsId[i] = "00000";
                         }
                     }
                 }
 
                 outputResult = RecipeCheck();
+
+                takeCount = 0;
 
                 if (outputResult != null)
                 {
@@ -144,13 +149,13 @@ public class Machine : MonoBehaviour , IStation
                     state = EMachineState.Broken;
                     gameObject.GetComponent<Renderer>().material.color = Color.red;
                 }
-                containItemsId = new Mundane[3];
+                containItemsId = new string[3] { "","","" };
                 activationTimer = 0f;
             }
         }
     }
 
-    private Mundane ConditionSlot(ESubType slotFixation)
+    private string ConditionSlot(ESubType slotFixation)
     {
 
         string result = "00000";
@@ -169,7 +174,7 @@ public class Machine : MonoBehaviour , IStation
             result = isSaltSea ? "00301" : "00300";
         }
 
-        return new Mundane(result);
+        return result;
     }
 
     public string RecipeCheck()
@@ -178,8 +183,11 @@ public class Machine : MonoBehaviour , IStation
 
         foreach (var item in containItemsId) 
         {
-            recipeCode += item.Id[4];
+            Debug.Log(item);
+            recipeCode += item[4];
         }
+
+        Debug.Log(recipeCode);
 
         for (int i = 0; i < recipeId.Length; i++)
         {

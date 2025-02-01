@@ -4,11 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 public class Mundane : IItem
 {
-    public Mundane(string id)
-    {
-        this.id = id;
-    }
-
     public override void Use()
     {
         Debug.Log("This item can't Use");

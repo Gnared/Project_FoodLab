@@ -85,6 +85,8 @@ public class PlayerController : MonoBehaviour
                 else if (isGrabing && targetStation != null) // Take
                 {
                     targetStation.Take(grabingItem.GetComponent<Mundane>());
+                    grabingItem.UnGrabbed();
+                    Ungrab();
                 }
 
                 else if (!isGrabing && targetStation != null) // Give
