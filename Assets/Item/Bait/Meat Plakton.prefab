@@ -120,11 +120,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 10402
-  nameItem: Seed Plakton
+  nameItem: Meat Plakton
   type: 1
   subType: 3
   isGrabbed: 0
   grabber: {fileID: 0}
+  color: {r: 0.5188679, g: 0.01713244, b: 0.07095946, a: 1}
 --- !u!54 &7834110977791264873
 Rigidbody:
   m_ObjectHideFlags: 0

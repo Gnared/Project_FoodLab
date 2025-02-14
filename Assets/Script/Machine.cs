@@ -25,6 +25,8 @@ public class Machine : MonoBehaviour , IStation
 
     public Transform outputPlacement;
 
+    public bool isCooker = false;
+
 
     [Header("Debug")]
     public string[] containItemsId = new string[3];
@@ -35,7 +37,7 @@ public class Machine : MonoBehaviour , IStation
 
     public void Take(Mundane item)
     {
-        if(state == EMachineState.Normal)
+        if(state == EMachineState.Normal || (isCooker && state == EMachineState.Working && takeCount <= 2))
         {
             foreach (var type in takeTypeList)
             {
@@ -50,6 +52,8 @@ public class Machine : MonoBehaviour , IStation
                                 containItemsId[i] = item.Id;
                                 Destroy(item.gameObject);
                                 takeCount++;
+                                break;
+
                             }
                         }
                     }
@@ -98,12 +102,13 @@ public class Machine : MonoBehaviour , IStation
     {
         if (state == EMachineState.Normal)
         {
+            gameObject.GetComponent<Renderer>().material.color = Color.white;
             if (takeCount >= takeSubTypeList.Length)
             {
                 state = EMachineState.Working;
             }
         }
-        if (state == EMachineState.Working)
+        else if (state == EMachineState.Working)
         {
             if (activationTimer < activationTime)
             {
@@ -141,17 +146,23 @@ public class Machine : MonoBehaviour , IStation
                 if (outputResult != null)
                 {
                     state = EMachineState.Finish;
-                    gameObject.GetComponent<Renderer>().material.color = Color.white;
 
                 }
                 else
                 {
                     state = EMachineState.Broken;
-                    gameObject.GetComponent<Renderer>().material.color = Color.red;
                 }
                 containItemsId = new string[3] { "","","" };
                 activationTimer = 0f;
             }
+        }
+        else if(state == EMachineState.Finish)
+        {
+            gameObject.GetComponent<Renderer>().material.color = Color.blue;
+        }
+        else if(state == EMachineState.Broken)
+        {
+            gameObject.GetComponent<Renderer>().material.color = Color.black;
         }
     }
 

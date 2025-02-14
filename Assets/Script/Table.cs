@@ -12,10 +12,12 @@ public class Table : MonoBehaviour, IStation
 
     public void Give(PlayerController taker)
     {
+
         var item = Instantiate(ItemManager.Instance.GetPrefabFromID(outputResult.Id), outputPlacement);
         item.GetComponent<IItem>().Grabbed(taker.gameObject);
         taker.Grab(item.GetComponent<IItem>());
 
+        Destroy(prefab);
         outputResult = null;
     }
 
@@ -23,7 +25,9 @@ public class Table : MonoBehaviour, IStation
     {
         prefab = Instantiate(ItemManager.Instance.GetPrefabFromID(item.Id), outputPlacement);
 
-        prefab.GetComponent<IItem>().Grabbed(gameObject);
+        //prefab.GetComponent<IItem>().Grabbed(gameObject);
+
+        outputResult = prefab.GetComponent<Mundane>();
 
         Destroy(item.gameObject);
     }
