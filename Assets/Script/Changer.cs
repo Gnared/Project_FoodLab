@@ -80,6 +80,7 @@ public class Changer : MonoBehaviour, IStation
     {
         if (state == EMachineState.Normal)
         {
+            gameObject.GetComponent<Renderer>().material.color = Color.white;
             if (containItemId != null)
             {
                 state = EMachineState.Working;
@@ -99,13 +100,13 @@ public class Changer : MonoBehaviour, IStation
                 if (outputResult != null)
                 {
                     state = EMachineState.Finish;
-                    gameObject.GetComponent<Renderer>().material.color = Color.white;
+                    gameObject.GetComponent<Renderer>().material.color = Color.blue;
 
                 }
                 else
                 {
                     state = EMachineState.Broken;
-                    gameObject.GetComponent<Renderer>().material.color = Color.red;
+                    gameObject.GetComponent<Renderer>().material.color = Color.black;
                 }
                 containItemId = null;
                 activationTimer = 0f;
