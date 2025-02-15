@@ -45,8 +45,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 067c562e508cb1d489fc76e67e782f92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxClockTime: 300
+  clockTime: 300
+  orderShowTime: 30
+  orderTimer: 0
   isLightOn: 1
   isTemperatureHot: 0
+  order: []
+  nextOrderCount: 0
 --- !u!114 &4787189380790726104
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64,8 +70,8 @@ MonoBehaviour:
   - {fileID: 9059289279127431453, guid: e98c6b9a740fa654e9b01eca453582a5, type: 3}
   - {fileID: 9059289279127431453, guid: 64c40d0ec350e794da310b78059027d8, type: 3}
   - {fileID: 9059289279127431453, guid: ab9c7b8eb7ab6724e910c49b85005e3b, type: 3}
-  - {fileID: 9059289279127431453, guid: 42c50d01e988cee4fa276562bdde2086, type: 3}
-  - {fileID: 9059289279127431453, guid: be09e8f2ff491b049a76c2b480bb820e, type: 3}
+  - {fileID: 9059289279127431453, guid: a13f9c5e0c5c42849a836255e2957246, type: 3}
+  - {fileID: 9059289279127431453, guid: c10e0857dc4773f4c8064bb1f889dfea, type: 3}
   - {fileID: 9059289279127431453, guid: 85bc5094cc45b6640aec5bfd85a951f3, type: 3}
   - {fileID: 9059289279127431453, guid: 059c8cbc0c2c3b6429da14a5521e3f6e, type: 3}
   - {fileID: 9059289279127431453, guid: f4c6b2849683eab44b2d91469f9fec21, type: 3}
