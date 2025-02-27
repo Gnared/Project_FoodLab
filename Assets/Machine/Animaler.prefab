@@ -119,18 +119,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   recipeId:
-  - 150
-  - 250
-  - 340
-  - 140
-  - 260
-  - 360
-  - 510
-  - 520
-  - 430
-  - 410
-  - 620
-  - 630
+  - 151
+  - 251
+  - 341
+  - 141
+  - 261
+  - 361
+  - 511
+  - 521
+  - 431
+  - 411
+  - 621
+  - 631
   recipeResult:
   - 20201
   - 20202
@@ -151,9 +151,10 @@ MonoBehaviour:
   SecondSlotFixation: 99
   isSaltSea: 0
   outputPlacement: {fileID: 0}
+  isCooker: 0
   containItemsId:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - 
+  - 
+  - 
   takeCount: 0
   outputResult: 
