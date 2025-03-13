@@ -80,6 +80,7 @@ public class Changer : MonoBehaviour, IStation
     {
         if (state == EMachineState.Normal)
         {
+            outputResult = recipeResult[0];
             gameObject.GetComponent<Renderer>().material.color = Color.white;
             if (containItemId != null)
             {
