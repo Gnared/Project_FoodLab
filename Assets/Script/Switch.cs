@@ -55,13 +55,10 @@ public class Switch : MonoBehaviour , IStation
         {
             GameManager.Instance.isLightOn = !GameManager.Instance.isLightOn;
         }
-        
-
         else if (varSwitch == 1)
         {
             GameManager.Instance.isTemperatureHot = !GameManager.Instance.isTemperatureHot;
         }
-
-    
+        GameManager.Instance.CheckLight();
     }
 }

@@ -11,6 +11,8 @@ internal class GameManager : MonoBehaviour
 
     public PlayerController[] players;
 
+    public Light[] lights;
+
     public float maxClockTime = 300f;
     public float clockTime = 300f;
 
@@ -75,6 +77,31 @@ internal class GameManager : MonoBehaviour
 
     }
 
+    public void CheckLight()
+    {
+        lights[0].gameObject.SetActive(false);
+        lights[1].gameObject.SetActive(false);
+        lights[2].gameObject.SetActive(false);
+        lights[3].gameObject.SetActive(false);
+
+        if (isLightOn && isTemperatureHot)
+        {
+            lights[0].gameObject.SetActive(true);
+        }
+        else if (isLightOn && !isTemperatureHot)
+        {
+            lights[1].gameObject.SetActive(true);
+        }
+        else if (!isLightOn && isTemperatureHot)
+        {
+            lights[2].gameObject.SetActive(true);
+        }
+        else if (!isLightOn && !isTemperatureHot)
+        {
+            lights[3].gameObject.SetActive(true);
+        }
+    }
+
     private void Update()
     {
         if(clockTime >= 0)
@@ -86,6 +113,10 @@ internal class GameManager : MonoBehaviour
         {
             clockTime = 0;  
         }
+
+       
+
+
 
         if (clockTime <= maxClockTime - 5 && nextOrderCount == 0)
         {
