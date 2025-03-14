@@ -11,6 +11,9 @@ public class PlayerController : MonoBehaviour
     public float speed = 10f;
     public float facingSpeed = 10f;
 
+    float currentSpeed = 0f;
+    Animator animator;
+
     HitBox itemTargetBox;
     HitBox stationTargetBox;
 
@@ -22,6 +25,8 @@ public class PlayerController : MonoBehaviour
     IItem targetItem = null;
     IStation targetStation = null;
 
+    bool cantMove = false;
+
     bool isGrabing = false;
     IItem grabingItem;
 
@@ -31,6 +36,9 @@ public class PlayerController : MonoBehaviour
 
     void Awake()
     {
+
+        animator = transform.Find("Model").GetComponent<Animator>();
+
         if(transform.Find("Target Box") != null)
         {
             itemTargetBox = Array.Find(transform.Find("Target Box").gameObject.GetComponents<HitBox>(), that => that.tagHit == "Item");
@@ -47,6 +55,8 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        animator.SetBool("isGrab", isGrabing);
+
         if (grabingItem == null)
         {
             isGrabing = false;
@@ -58,35 +68,35 @@ public class PlayerController : MonoBehaviour
 
         if (targetItem != null || targetStation != null)
         {
-            if (Input.GetKeyDown(KeyCode.Space)) 
+            if (Input.GetKeyDown(KeyCode.Space))
             {
-                ///
-                /// Pick
-                /// When There is TargetItem , No Grabing
-                /// 
-                /// Place
-                /// When There is Grabing , No TargetStation , Can't Use Item
-                /// 
-                /// Use
-                /// When There is Use Item
-                /// 
-                /// Take
-                /// When There is Grabing , TargetStation
-                /// 
-                /// Give
-                /// When There is TargetStation, no Grabing
-                ///
+                                ///
+                                /// Pick
+                                /// When There is TargetItem , No Grabing
+                                /// 
+                                /// Place
+                                /// When There is Grabing , No TargetStation , Can't Use Item
+                                /// 
+                                /// Use
+                                /// When There is Use Item
+                                /// 
+                                /// Take
+                                /// When There is Grabing , TargetStation
+                                /// 
+                                /// Give
+                                /// When There is TargetStation, no Grabing
+                                ///
 
-                if (isGrabing && grabingItem.SubType == ESubType.Tool) // Use
-                {
-                    grabingItem.Use();
-                }
-
-                else if (isGrabing && targetStation != null) // Take
+                if (isGrabing && targetStation != null) // Take
                 {
                     targetStation.Take(grabingItem.GetComponent<Mundane>());
                     //grabingItem.UnGrabbed();
                     //Ungrab();
+                }
+
+                else if (isGrabing && grabingItem.SubType == ESubType.Tool) // Use
+                {
+                    grabingItem.Use();
                 }
 
                 else if (!isGrabing && targetStation != null) // Give
@@ -106,25 +116,32 @@ public class PlayerController : MonoBehaviour
                     Grab(targetItem);
                 }
             }
+           
+            
 
         }
-        
-        if(dashTimer >= 0)
+
+        if (dashTimer >= 0)
         {
-            transform.position = Vector3.Lerp(transform.position, transform.position + transform.forward * 4, Time.deltaTime * 5);
+            transform.position = Vector3.Lerp(transform.position, transform.position + transform.forward * 2, Time.deltaTime * 5);
             dashTimer -= Time.deltaTime;
         }
 
         else if (Input.GetKeyDown(KeyCode.LeftShift) && dashCooldownTimer <= 0f)
         {
+
+            animator.SetTrigger("isDash");
+
             dashCooldownTimer = 0.5f;
             dashTimer = 0.2f;
-            transform.position = Vector3.Lerp(transform.position, transform.position + transform.forward * 4, Time.deltaTime * 5);
+            transform.position = Vector3.Lerp(transform.position, transform.position + transform.forward * 2, Time.deltaTime * 5);
             dashTimer -= Time.deltaTime;
         }
 
-        else if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
+        else if ((Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0) && !cantMove)
         {
+            animator.SetBool("isWalk", true);
+
             controlX = Input.GetAxis("Horizontal") * speed * Time.deltaTime;
             controlZ = Input.GetAxis("Vertical") * speed * Time.deltaTime;
             transform.position += new Vector3(controlX, 0, controlZ);
@@ -132,6 +149,12 @@ public class PlayerController : MonoBehaviour
 
             facing = Quaternion.LookRotation(new Vector3(controlX, 0, controlZ));
             transform.rotation = Quaternion.Lerp(transform.rotation, facing, facingSpeed * Time.deltaTime);
+        }
+
+        else if(Input.GetAxis("Horizontal") == 0 && Input.GetAxis("Vertical") == 0)
+        {
+            animator.SetBool("isWalk", false);
+
         }
 
         if (dashCooldownTimer >= 0)

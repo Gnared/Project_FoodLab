@@ -32,6 +32,7 @@ public abstract class IItem : MonoBehaviour
         this.grabber = grabber;
         isGrabbed = true;
         transform.SetParent(grabber.transform, true);
+        GetComponent<Collider>().isTrigger = true ;
         rb.isKinematic = true;
     }
     public void UnGrabbed()
@@ -39,6 +40,7 @@ public abstract class IItem : MonoBehaviour
         this.grabber = null;
         isGrabbed = false;
         rb.isKinematic = false;
+        GetComponent<Collider>().isTrigger = false;
         transform.SetParent(null);
     }
 
