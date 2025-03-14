@@ -5,9 +5,16 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Experimental.AI;
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    public PlayerInput inputActions;
+    InputAction moveAction;
+
+    [SerializeField]
+    private int playerIndex = 0;
+
     public float speed = 10f;
     public float facingSpeed = 10f;
 
@@ -25,6 +32,7 @@ public class PlayerController : MonoBehaviour
     IItem targetItem = null;
     IStation targetStation = null;
 
+    bool isFishing = false;
     bool cantMove = false;
 
     bool isGrabing = false;
@@ -36,6 +44,28 @@ public class PlayerController : MonoBehaviour
 
     void Awake()
     {
+
+        inputActions = GetComponent<PlayerInput>();
+        moveAction = inputActions.actions.FindAction("Movement");
+
+        if(playerIndex == 0)
+        {
+            transform.Find("WhiteCircle").gameObject.GetComponent<SpriteRenderer>().color = Color.red;
+        }
+        else if(playerIndex == 1)
+        {
+            transform.Find("WhiteCircle").gameObject.GetComponent<SpriteRenderer>().color = Color.yellow;
+        }
+        else if(playerIndex == 2)
+        {
+            transform.Find("WhiteCircle").gameObject.GetComponent<SpriteRenderer>().color = Color.green;
+        }
+        else if(playerIndex == 3)
+        {
+            transform.Find("WhiteCircle").gameObject.GetComponent<SpriteRenderer>().color = Color.blue;
+        }
+
+        
 
         animator = transform.Find("Model").GetComponent<Animator>();
 
@@ -55,6 +85,8 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        Vector2 moveDirection = moveAction.ReadValue<Vector2>();
+
         animator.SetBool("isGrab", isGrabing);
 
         if (grabingItem == null)
@@ -116,10 +148,49 @@ public class PlayerController : MonoBehaviour
                     Grab(targetItem);
                 }
             }
-           
-            
+
+            if (inputActions.actions.FindAction("Use").triggered)
+            {
+                if (isGrabing && targetStation != null) // Take
+                {
+                    targetStation.Take(grabingItem.GetComponent<Mundane>());
+                    //grabingItem.UnGrabbed();
+                    //Ungrab();
+                }
+
+                else if (isGrabing && grabingItem.SubType == ESubType.Tool) // Use
+                {
+                    grabingItem.Use();
+                }
+
+                else if (!isGrabing && targetStation != null) // Give
+                {
+                    targetStation.Give(this);
+                }
+
+                else if (targetItem != null && !targetItem.isGrabbed && !isGrabing) // Pick
+                {
+                    targetItem.Grabbed(gameObject);
+                    Grab(targetItem);
+                }
+            }
+
+            if (inputActions.actions.FindAction("Drop").triggered)
+            {
+                if (isGrabing && targetStation == null) // Place
+                {
+                    grabingItem.UnGrabbed();
+                    Ungrab();
+                }
+            }
 
         }
+        
+        
+
+
+
+
 
         if (dashTimer >= 0)
         {
@@ -127,7 +198,7 @@ public class PlayerController : MonoBehaviour
             dashTimer -= Time.deltaTime;
         }
 
-        else if (Input.GetKeyDown(KeyCode.LeftShift) && dashCooldownTimer <= 0f)
+        else if (inputActions.actions.FindAction("Dash").triggered && dashCooldownTimer <= 0f)
         {
 
             animator.SetTrigger("isDash");
@@ -138,20 +209,17 @@ public class PlayerController : MonoBehaviour
             dashTimer -= Time.deltaTime;
         }
 
-        else if ((Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0) && !cantMove)
+        else if ((moveDirection.magnitude != 0) && !cantMove)
         {
             animator.SetBool("isWalk", true);
 
-            controlX = Input.GetAxis("Horizontal") * speed * Time.deltaTime;
-            controlZ = Input.GetAxis("Vertical") * speed * Time.deltaTime;
-            transform.position += new Vector3(controlX, 0, controlZ);
+            transform.position += new Vector3(moveDirection.x, 0, moveDirection.y) * speed * Time.deltaTime;
 
-
-            facing = Quaternion.LookRotation(new Vector3(controlX, 0, controlZ));
+            facing = Quaternion.LookRotation(new Vector3(moveDirection.x, 0, moveDirection.y));
             transform.rotation = Quaternion.Lerp(transform.rotation, facing, facingSpeed * Time.deltaTime);
         }
 
-        else if(Input.GetAxis("Horizontal") == 0 && Input.GetAxis("Vertical") == 0)
+        else if(moveDirection.magnitude == 0 || cantMove)
         {
             animator.SetBool("isWalk", false);
 
@@ -176,4 +244,10 @@ public class PlayerController : MonoBehaviour
         isGrabing = false;
         grabingItem = null;
     }
+
+    public int getPlayerIndex()
+    {
+        return playerIndex;
+    }
+
 }

@@ -3,10 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 internal class GameManager : MonoBehaviour
 {
     private static GameManager instance;
+
+    public PlayerController[] players;
 
     public float maxClockTime = 300f;
     public float clockTime = 300f;
@@ -24,6 +27,15 @@ internal class GameManager : MonoBehaviour
 
     private void Start()
     {
+
+        var gamepads = Gamepad.all;
+        for (int i = 0; i < gamepads.Count && i < players.Length; i++) {
+            players[i].gameObject.SetActive(true);
+            players[i].inputActions.SwitchCurrentControlScheme("Gamepad",gamepads[i]);                
+        }
+
+
+
         string[] ordering = new string[] { "40101", "40104", "40104", "40105", "40108", "40104", "40109", "40105", "40108", "40108", "40101", "40101", "40109", "40105", "40104", "40101", "40108", "40101", "40109", "40105", };
 
         foreach (string aOrder in ordering)
@@ -60,6 +72,7 @@ internal class GameManager : MonoBehaviour
         {
             instance = this;
         }
+
     }
 
     private void Update()
