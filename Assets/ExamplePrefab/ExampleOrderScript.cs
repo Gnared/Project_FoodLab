@@ -6,8 +6,8 @@ public class ExampleOrderScript : MonoBehaviour
 {
     public int templatePointerNum = 0;
 
-    public GameObject[] orderTemplate = new GameObject[5];
-    public GameObject[] orderInstance = new GameObject[5];
+    public GameObject[] orderTemplate = new GameObject[8];
+    public GameObject[] orderInstance = new GameObject[8];
 
     public string orderPresent;
 
@@ -15,7 +15,11 @@ public class ExampleOrderScript : MonoBehaviour
     {
         for (int i = 0; i < orderInstance.Length; i++)
         {
-            orderInstance[i] = Instantiate(orderTemplate[i],gameObject.transform);
+            orderInstance[i] = Instantiate(orderTemplate[i],transform);
+            
+            orderInstance[i].GetComponent<RectTransform>().position = GetComponent<RectTransform>().position;
+
+
         }
         SetAllOff();
     }
@@ -33,25 +37,40 @@ public class ExampleOrderScript : MonoBehaviour
                     SetAllOff();
                     orderInstance[0].SetActive(true);
                 }
-                else if (orderPresent == "40104")
+                else if (orderPresent == "40102")
                 {
                     SetAllOff();
                     orderInstance[1].SetActive(true);
                 }
-                else if (orderPresent == "40105")
+                else if (orderPresent == "40103")
                 {
                     SetAllOff();
                     orderInstance[2].SetActive(true);
                 }
-                else if (orderPresent == "40108")
+                else if (orderPresent == "40104")
                 {
                     SetAllOff();
                     orderInstance[3].SetActive(true);
                 }
-                else if (orderPresent == "40109")
+                else if (orderPresent == "40105")
                 {
                     SetAllOff();
                     orderInstance[4].SetActive(true);
+                }
+                else if (orderPresent == "40106")
+                {
+                    SetAllOff();
+                    orderInstance[5].SetActive(true);
+                }
+                else if (orderPresent == "40107")
+                {
+                    SetAllOff();
+                    orderInstance[6].SetActive(true);
+                }
+                else if (orderPresent == "40108")
+                {
+                    SetAllOff();
+                    orderInstance[7].SetActive(true);
                 }
             }
            

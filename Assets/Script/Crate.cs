@@ -9,15 +9,6 @@ public class Crate : MonoBehaviour, IStation
 
     public string prefabId;
 
-    public Color color = Color.white;
-
-    private void Start()
-    {
-        GetComponent<MeshRenderer>().material.color = color;
-    }
-
-
-
     public void Give(PlayerController taker)
     {
         var item = Instantiate(ItemManager.Instance.GetPrefabFromID(prefabId), outputPlacement);

@@ -146,11 +146,13 @@ public class Machine : MonoBehaviour , IStation
                 if (outputResult != null)
                 {
                     state = EMachineState.Finish;
+                    GameManager.Instance.SFXPlay(null,1);
 
                 }
                 else
                 {
                     state = EMachineState.Broken;
+                    GameManager.Instance.SFXPlay(null, 0);
                 }
                 containItemsId = new string[3] { "","","" };
                 activationTimer = 0f;

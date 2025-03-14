@@ -16,7 +16,7 @@ public class UITime : MonoBehaviour
         text = GetComponent<TMP_Text>();
     }
 
-    void Update()
+    void FixedUpdate()
     {
         second = Mathf.RoundToInt(GameManager.Instance.clockTime);
 

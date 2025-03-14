@@ -366,7 +366,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputActions: {fileID: 0}
-  playerIndex: 2
+  dashSound: {fileID: 8300000, guid: f6a89428d989a4a48a8492e8620641b2, type: 3}
+  pickUpSFX: {fileID: 8300000, guid: 4f03e5a12c5581d40982846e183432e3, type: 3}
+  repairSFX: {fileID: 8300000, guid: 78324d7d99032e247a04e4c25080694b, type: 3}
+  playerIndex: 0
   speed: 5
   facingSpeed: 10
 --- !u!114 &2217634295073081078

@@ -6,17 +6,11 @@ using UnityEngine;
 
 public class Switch : MonoBehaviour , IStation
 {
-    MeshRenderer renderer;
 
     [Description("Light = 0, Temperature = 1")]
     public short varSwitch = 0;
 
     bool varStatus = false;
-
-    private void Start()
-    {
-        renderer = GetComponent<MeshRenderer>();
-    }
 
     private void Update()
     {
@@ -27,15 +21,6 @@ public class Switch : MonoBehaviour , IStation
         else if (varSwitch == 1 && varStatus != GameManager.Instance.isTemperatureHot)
         { 
             varStatus = GameManager.Instance.isTemperatureHot;
-        }
-
-        if (varStatus)
-        {
-            renderer.material.color = Color.green;
-        }
-        else
-        {
-            renderer.material.color = Color.white;
         }
     }
 

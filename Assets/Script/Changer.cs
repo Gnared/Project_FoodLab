@@ -81,7 +81,6 @@ public class Changer : MonoBehaviour, IStation
         if (state == EMachineState.Normal)
         {
             outputResult = recipeResult[0];
-            gameObject.GetComponent<Renderer>().material.color = Color.white;
             if (containItemId != null)
             {
                 state = EMachineState.Working;
@@ -92,7 +91,6 @@ public class Changer : MonoBehaviour, IStation
             if (activationTimer < activationTime)
             {
                 activationTimer += Time.deltaTime;
-                gameObject.GetComponent<Renderer>().material.color = Color.Lerp(Color.red, Color.green, activationTimer / activationTime);
             }
             else
             {
@@ -101,13 +99,13 @@ public class Changer : MonoBehaviour, IStation
                 if (outputResult != null)
                 {
                     state = EMachineState.Finish;
-                    gameObject.GetComponent<Renderer>().material.color = Color.blue;
+                    GameManager.Instance.SFXPlay(null, 1);
 
                 }
                 else
                 {
                     state = EMachineState.Broken;
-                    gameObject.GetComponent<Renderer>().material.color = Color.black;
+                    GameManager.Instance.SFXPlay(null, 0);
                 }
                 containItemId = null;
                 activationTimer = 0f;

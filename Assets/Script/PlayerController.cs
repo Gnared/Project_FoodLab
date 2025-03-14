@@ -12,6 +12,10 @@ public class PlayerController : MonoBehaviour
     public PlayerInput inputActions;
     InputAction moveAction;
 
+    public AudioClip dashSound;
+    public AudioClip pickUpSFX;
+    public AudioClip repairSFX;
+
     [SerializeField]
     private int playerIndex = 0;
 
@@ -44,7 +48,7 @@ public class PlayerController : MonoBehaviour
 
     void Awake()
     {
-
+        
         inputActions = GetComponent<PlayerInput>();
         moveAction = inputActions.actions.FindAction("Movement");
 
@@ -144,6 +148,7 @@ public class PlayerController : MonoBehaviour
 
                 else if (targetItem != null && !targetItem.isGrabbed && !isGrabing) // Pick
                 {
+
                     targetItem.Grabbed(gameObject);
                     Grab(targetItem);
                 }
@@ -153,6 +158,7 @@ public class PlayerController : MonoBehaviour
             {
                 if (isGrabing && targetStation != null) // Take
                 {
+                    GameManager.Instance.SFXPlay(pickUpSFX);
                     targetStation.Take(grabingItem.GetComponent<Mundane>());
                     //grabingItem.UnGrabbed();
                     //Ungrab();
@@ -165,11 +171,13 @@ public class PlayerController : MonoBehaviour
 
                 else if (!isGrabing && targetStation != null) // Give
                 {
+                    GameManager.Instance.SFXPlay(pickUpSFX);
                     targetStation.Give(this);
                 }
 
                 else if (targetItem != null && !targetItem.isGrabbed && !isGrabing) // Pick
                 {
+                    GameManager.Instance.SFXPlay(pickUpSFX);
                     targetItem.Grabbed(gameObject);
                     Grab(targetItem);
                 }
@@ -200,8 +208,9 @@ public class PlayerController : MonoBehaviour
 
         else if (inputActions.actions.FindAction("Dash").triggered && dashCooldownTimer <= 0f)
         {
-
             animator.SetTrigger("isDash");
+
+            GameManager.Instance.SFXPlay(dashSound);
 
             dashCooldownTimer = 0.5f;
             dashTimer = 0.2f;
