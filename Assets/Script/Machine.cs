@@ -15,6 +15,15 @@ public class Machine : MonoBehaviour , IStation
     public string[] recipeResult;
     public float activationTime = 4f;
 
+    public HUD[] HUDs;
+
+
+    public Color[][] palletes;
+
+    public Color[] pallete1;
+    public Color[] pallete2;
+    public Color[] pallete3;
+
     public ESubType[] takeSubTypeList;
     public List<EType> takeTypeList;
 
@@ -34,6 +43,14 @@ public class Machine : MonoBehaviour , IStation
     public string outputResult = null;
 
     float activationTimer = 0f;
+
+    private void Start()
+    {
+        palletes = new Color[3][];
+        palletes[0] = pallete1; 
+        palletes[1] = pallete2; 
+        palletes[2] = pallete3; 
+    }
 
     public void Take(Mundane item)
     {
@@ -102,7 +119,22 @@ public class Machine : MonoBehaviour , IStation
     {
         if (state == EMachineState.Normal)
         {
-            gameObject.GetComponent<Renderer>().material.color = Color.white;
+            for (int i = 0; i < HUDs.Length; i++)
+            {
+                if (containItemsId[i] == "")
+                {
+                    HUDs[i].color = palletes[i][0];
+                }
+                else
+                {
+                    int num = int.Parse(containItemsId[i] + "");
+
+                    HUDs[i].color = palletes[i][1];
+                }
+
+            }
+
+
             if (takeCount >= takeSubTypeList.Length)
             {
                 state = EMachineState.Working;
@@ -110,10 +142,14 @@ public class Machine : MonoBehaviour , IStation
         }
         else if (state == EMachineState.Working)
         {
+            for (int i = 0; i < HUDs.Length; i++)
+            {
+                HUDs[i].isFlickering = true;
+            }
+
             if (activationTimer < activationTime)
             {
                 activationTimer += Time.deltaTime;
-                gameObject.GetComponent<Renderer>().material.color = Color.Lerp(Color.red, Color.green, activationTimer / activationTime);
             }
             else
             {
@@ -146,12 +182,20 @@ public class Machine : MonoBehaviour , IStation
                 if (outputResult != null)
                 {
                     state = EMachineState.Finish;
+                    for (int i = 0; i < HUDs.Length; i++)
+                    {
+                        HUDs[i].isFlickering = false;
+                    }
                     GameManager.Instance.SFXPlay(null,1);
 
                 }
                 else
                 {
                     state = EMachineState.Broken;
+                    for (int i = 0; i < HUDs.Length; i++)
+                    {
+                        HUDs[i].isFlickering = false;
+                    }
                     GameManager.Instance.SFXPlay(null, 0);
                 }
                 containItemsId = new string[3] { "","","" };
@@ -160,11 +204,11 @@ public class Machine : MonoBehaviour , IStation
         }
         else if(state == EMachineState.Finish)
         {
-            gameObject.GetComponent<Renderer>().material.color = Color.blue;
+
         }
         else if(state == EMachineState.Broken)
         {
-            gameObject.GetComponent<Renderer>().material.color = Color.black;
+
         }
     }
 
@@ -196,11 +240,8 @@ public class Machine : MonoBehaviour , IStation
 
         foreach (var item in containItemsId) 
         {
-            Debug.Log(item);
             recipeCode += item[4];
         }
-
-        Debug.Log(recipeCode);
 
         for (int i = 0; i < recipeId.Length; i++)
         {

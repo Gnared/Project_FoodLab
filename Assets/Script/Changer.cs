@@ -6,6 +6,16 @@ public class Changer : MonoBehaviour, IStation
 {
     EMachineState state = EMachineState.Normal;
 
+    public HUD[] HUDs;
+
+
+    public Color[][] palletes;
+
+    public Color[] pallete1;
+    public Color[] pallete2;
+    public Color[] pallete3;
+
+
     public string[] recipeId;
     public string[] recipeResult;
 
@@ -28,6 +38,14 @@ public class Changer : MonoBehaviour, IStation
         }
 
         containItemId = null;
+    }
+
+    private void Start()
+    {
+        palletes = new Color[3][];
+        palletes[0] = pallete1;
+        palletes[1] = pallete2;
+        palletes[2] = pallete3;
     }
 
     public void Give(PlayerController taker)
@@ -53,6 +71,9 @@ public class Changer : MonoBehaviour, IStation
     {
         if (state == EMachineState.Normal)
         {
+
+
+
             foreach (var type in takeTypeList)
             {
                 if (item.Type == type)
@@ -80,6 +101,20 @@ public class Changer : MonoBehaviour, IStation
     {
         if (state == EMachineState.Normal)
         {
+            for (int i = 0; i < HUDs.Length; i++)
+            {
+                if (containItemId == "")
+                {
+                    HUDs[i].color = palletes[i][0];
+                }
+                else
+                {
+                    int num = 1;
+                    HUDs[i].color = palletes[i][num];
+                }
+
+            }
+
             outputResult = recipeResult[0];
             if (containItemId != null)
             {
