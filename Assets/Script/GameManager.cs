@@ -3,15 +3,21 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using Random = System.Random;
 
 internal class GameManager : MonoBehaviour
 {
     private static GameManager instance;
 
-    Random random = new Random();
+    public GameObject playingUI;
+    public GameObject finishUI;
+
+    public bool isGameFinish;
+
 
     public PlayerController[] players;
     public AudioSource audioSource;
@@ -159,6 +165,25 @@ internal class GameManager : MonoBehaviour
             }
 
             orderTimer = 0;
+
+        }
+
+        if(clockTime < 0f)
+        {
+            clockTime = 0f;
+
+            finishUI.SetActive(true);
+            playingUI.SetActive(false);
+
+            Time.timeScale = 1;
+
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                SceneManager.LoadScene("SampleScene");
+            }
+
+           
+
 
         }
     }

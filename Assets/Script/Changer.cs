@@ -110,7 +110,7 @@ public class Changer : MonoBehaviour, IStation
                 else
                 {
                     int num = 1;
-                    HUDs[i].color = palletes[i][num];
+                    HUDs[i].color = palletes[i][1];
                 }
 
             }
