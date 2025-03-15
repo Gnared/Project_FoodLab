@@ -124,16 +124,17 @@ internal class GameManager : MonoBehaviour
             for (int i = 0; i < orderTimeOutClock.Length; i++)
             {
                 orderTimeOutClock[i] -= Time.deltaTime;
+
+                if(orderTimeOutClock[i] < 0f)
+                {
+                    TimedOrder(i);
+                }
             }
         }
         else
         {
             clockTime = 0;  
         }
-
-       
-
-
 
         if (clockTime <= maxClockTime - 5 && nextOrderCount == 0)
         {
@@ -172,6 +173,40 @@ internal class GameManager : MonoBehaviour
 
             nextOrderCount++;
         }
+    }
+
+    public void TimedOrder (int orderNum)
+    {
+        string[] tempOrder1 = new string[orderNum];
+        float[] tempOrderTimeOutClock1 = new float[orderNum];
+
+
+        Score -= 300;
+
+
+        if (orderNum > 0)
+        {
+            for (int i = 0; i < orderNum; i++)
+            {
+                tempOrder1[i] = order[i];
+                tempOrderTimeOutClock1[i] = orderTimeOutClock[i];
+            }
+        }
+
+        string[] tempOrder2 = new string[order.Length - orderNum - 1];
+        float[] tempOrderTimeOutClock2 = new float[orderTimeOutClock.Length - orderNum - 1];
+
+        if (tempOrder2.Length > 0)
+        {
+            for (int i = 0; i < tempOrder2.Length; i++)
+            {
+                tempOrder2[i] = order[i + orderNum + 1];
+                tempOrderTimeOutClock2[i] = orderTimeOutClock[i + orderNum + 1];
+            }
+        }
+
+        order = tempOrder1.Concat(tempOrder2).ToArray();
+        orderTimeOutClock = tempOrderTimeOutClock1.Concat(tempOrderTimeOutClock2).ToArray();
     }
 
     public void CompleteOrder(int orderNum)
