@@ -3466,6 +3466,7 @@ MonoBehaviour:
   HUDs:
   - {fileID: 1241263027}
   - {fileID: 1353885580}
+  audioClip: {fileID: 0}
   pallete1:
   - {r: 0.745283, g: 0.745283, b: 0.745283, a: 1}
   - {r: 0.5613208, g: 0.57744664, b: 1, a: 1}
@@ -6249,6 +6250,7 @@ MonoBehaviour:
   HUDs:
   - {fileID: 277842471}
   - {fileID: 613697537}
+  audioClip: {fileID: 0}
   pallete1:
   - {r: 0.7075472, g: 0.7075472, b: 0.7075472, a: 1}
   - {r: 1, g: 0.504717, b: 0.5192841, a: 1}
@@ -6366,6 +6368,7 @@ MonoBehaviour:
   activationTime: 6
   HUDs:
   - {fileID: 919194038}
+  audioClip: {fileID: 8300000, guid: d28e4978d693fe3418d39961eb999e99, type: 3}
   pallete1:
   - {r: 0.6981132, g: 0.6981132, b: 0.6981132, a: 1}
   - {r: 0, g: 0.6037736, b: 0.025368601, a: 1}
@@ -7646,6 +7649,7 @@ MonoBehaviour:
   - 40109
   activationTime: 4
   HUDs: []
+  audioClip: {fileID: 0}
   pallete1:
   - {r: 0, g: 0, b: 0, a: 0}
   - {r: 0, g: 0, b: 0, a: 0}
@@ -7864,6 +7868,7 @@ MonoBehaviour:
   - {fileID: 695946545}
   - {fileID: 1340002631}
   - {fileID: 1387684802}
+  audioClip: {fileID: 0}
   pallete1:
   - {r: 0.5660378, g: 0.5660378, b: 0.5660378, a: 1}
   - {r: 0.61379987, g: 1, b: 0.48584908, a: 1}
@@ -8577,6 +8582,7 @@ MonoBehaviour:
   HUDs:
   - {fileID: 1481054163}
   - {fileID: 718769717}
+  audioClip: {fileID: 0}
   pallete1:
   - {r: 0.6698113, g: 0.6698113, b: 0.6698113, a: 1}
   - {r: 1, g: 0.504717, b: 0.504717, a: 1}
@@ -9610,6 +9616,7 @@ MonoBehaviour:
   activationTime: 6
   HUDs:
   - {fileID: 702890284}
+  audioClip: {fileID: 8300000, guid: d28e4978d693fe3418d39961eb999e99, type: 3}
   pallete1:
   - {r: 0.5377358, g: 0.5377358, b: 0.5377358, a: 1}
   - {r: 0.1328078, g: 0.7169812, b: 0, a: 1}
@@ -12008,6 +12015,10 @@ PrefabInstance:
       propertyPath: lights.Array.data[3]
       value: 
       objectReference: {fileID: 292375530}
+    - target: {fileID: 8981337663811242172, guid: a7f2a8eeb3bfc984092b1b5752f4f3ff, type: 3}
+      propertyPath: orderMaxTimeOutClock
+      value: 75
+      objectReference: {fileID: 0}
     - target: {fileID: 8981337663811242172, guid: a7f2a8eeb3bfc984092b1b5752f4f3ff, type: 3}
       propertyPath: players.Array.data[0]
       value: 

@@ -22,7 +22,6 @@ public class PlayerController : MonoBehaviour
     public float speed = 10f;
     public float facingSpeed = 10f;
 
-    float currentSpeed = 0f;
     Animator animator;
 
     HitBox itemTargetBox;
@@ -35,8 +34,7 @@ public class PlayerController : MonoBehaviour
 
     IItem targetItem = null;
     IStation targetStation = null;
-
-    bool isFishing = false;
+    
     bool cantMove = false;
 
     bool isGrabing = false;

@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -56,7 +55,7 @@ internal class GameManager : MonoBehaviour
             players[i].inputActions.SwitchCurrentControlScheme("Gamepad",gamepads[i]);                
         }
 
-        string[] ordering = new string[] { "40101", "40104", "40104", "40105", "40108", "40104", "40109", "40105", "40108", "40108", "40101", "40101", "40109", "40105", "40104", "40101", "40108", "40101", "40109", "40105", };
+        string[] ordering = new string[] { "40101", "40102", "40103", "40104", "40105", "40106", "40107", "40108", "40101", "40103", "40105", "40107", "40102", "40104", "40106", "40108", "40108", "40101", "40102", "40105", };
 
         foreach (string aOrder in ordering)
         {
@@ -194,7 +193,7 @@ internal class GameManager : MonoBehaviour
         if (waitingOrder.Count != 0)
         {
             order = order.Concat(new string[] { waitingOrder.Dequeue() }).ToArray();
-            orderTimeOutClock = orderTimeOutClock.Concat(new float[] { 180f, }).ToArray();
+            orderTimeOutClock = orderTimeOutClock.Concat(new float[] { orderMaxTimeOutClock, }).ToArray();
 
             nextOrderCount++;
         }

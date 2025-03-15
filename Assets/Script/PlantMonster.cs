@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PlantMonster : MonoBehaviour, Monster
 {
-    int maxHp = 0;
     int currentHp = 0;
     GameObject[] target; 
 

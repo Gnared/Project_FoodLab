@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor;
-using UnityEditor.Build.Content;
 using UnityEngine;
 
 public class Machine : MonoBehaviour , IStation
@@ -17,6 +16,7 @@ public class Machine : MonoBehaviour , IStation
 
     public HUD[] HUDs;
 
+    public AudioClip audioClip;
 
     public Color[][] palletes;
 
@@ -66,6 +66,12 @@ public class Machine : MonoBehaviour , IStation
                         {
                             if (containItemsId[i] == "")
                             {
+                                System.Random random = new System.Random();
+                                if (audioClip != null && random.Next(0,8) == 0 )
+                                {
+                                    GameManager.Instance.SFXPlay(audioClip);
+                                }                               
+
                                 containItemsId[i] = item.Id;
                                 Destroy(item.gameObject);
                                 takeCount++;

@@ -11,6 +11,8 @@ public class Crate : MonoBehaviour, IStation
 
     public void Give(PlayerController taker)
     {
+
+
         var item = Instantiate(ItemManager.Instance.GetPrefabFromID(prefabId), outputPlacement);
         item.GetComponent<IItem>().Grabbed(taker.gameObject);
         taker.Grab(item.GetComponent<IItem>());

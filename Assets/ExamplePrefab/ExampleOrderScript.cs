@@ -96,7 +96,7 @@ public class ExampleOrderScript : MonoBehaviour
 
         if (templatePointerNum < GameManager.Instance.orderTimeOutClock.Length)
         {
-            targetSlider.value = GameManager.Instance.orderTimeOutClock[templatePointerNum] / 180f;
+            targetSlider.value = GameManager.Instance.orderTimeOutClock[templatePointerNum] / GameManager.Instance.orderMaxTimeOutClock;
 
         }
     }
