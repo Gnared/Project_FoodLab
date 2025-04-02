@@ -141,7 +141,7 @@ public class Machine : MonoBehaviour , IStation
             }
 
 
-            if (takeCount >= takeSubTypeList.Length)
+            if (takeCount >= takeSubTypeList.Length || (isCooker && takeCount >= 2))
             {
                 state = EMachineState.Working;
             }

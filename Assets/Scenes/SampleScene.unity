@@ -7893,7 +7893,7 @@ MonoBehaviour:
   - {r: 0.6156863, g: 1, b: 0.48627454, a: 1}
   - {r: 0.6156863, g: 1, b: 0.48627454, a: 1}
   - {r: 0.6156863, g: 1, b: 0.48627454, a: 1}
-  takeSubTypeList: 0400000005000000
+  takeSubTypeList: 040000000500000006000000
   takeTypeList: 02000000
   ThirdSlotFixation: 99
   SecondSlotFixation: 99
