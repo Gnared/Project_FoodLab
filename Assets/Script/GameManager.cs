@@ -17,6 +17,8 @@ internal class GameManager : MonoBehaviour
 
     public bool isGameFinish;
 
+    public GameObject memeMats1;
+    public GameObject memeMats2;
 
     public PlayerController[] players;
     public AudioSource audioSource;
@@ -46,6 +48,9 @@ internal class GameManager : MonoBehaviour
     public Queue<string> waitingOrder = new Queue<string>();
     public int nextOrderCount = 0;
 
+    internal int OrderFail;
+    internal int OrderSucess;
+
     private void Start()
     {
 
@@ -65,13 +70,13 @@ internal class GameManager : MonoBehaviour
         clockTime = maxClockTime;
     }
 
-    public GameManager()
-    {
-        if (instance != null && instance != this)
-        {
-            Destroy(this);
-        }
-    }
+    //public GameManager()
+    //{
+    //    if (instance != null && instance != this)
+    //    {
+    //        Destroy(this);
+    //    }
+    //}
 
     public static GameManager Instance
     {
@@ -91,6 +96,7 @@ internal class GameManager : MonoBehaviour
         {
             instance = this;
         }
+        memeMats2.gameObject.SetActive(true);
 
     }
 
@@ -121,6 +127,7 @@ internal class GameManager : MonoBehaviour
 
     private void Update()
     {
+
         if(clockTime >= 0)
         {
             clockTime -= Time.deltaTime;
@@ -174,22 +181,19 @@ internal class GameManager : MonoBehaviour
             finishUI.SetActive(true);
             playingUI.SetActive(false);
 
-            Time.timeScale = 1;
+            Time.timeScale = 0;
 
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                SceneManager.LoadScene("SampleScene");
-            }
-
-           
-
+            gameObject.GetComponent<ScoreboardScene>().enabled = true;
 
         }
     }
 
+
     public void RunOrder()
     {
         SFXPlay(orderSFX);
+        memeMats2.gameObject.SetActive(false);
+
         if (waitingOrder.Count != 0)
         {
             order = order.Concat(new string[] { waitingOrder.Dequeue() }).ToArray();
@@ -197,6 +201,8 @@ internal class GameManager : MonoBehaviour
 
             nextOrderCount++;
         }
+
+        memeMats1.GetComponent<Animator>().SetTrigger("Trigger");
     }
 
     public void TimedOrder (int orderNum)
@@ -231,6 +237,9 @@ internal class GameManager : MonoBehaviour
 
         order = tempOrder1.Concat(tempOrder2).ToArray();
         orderTimeOutClock = tempOrderTimeOutClock1.Concat(tempOrderTimeOutClock2).ToArray();
+
+        OrderFail++;
+
     }
 
     public void CompleteOrder(int orderNum)
@@ -266,8 +275,8 @@ internal class GameManager : MonoBehaviour
         order = tempOrder1.Concat(tempOrder2).ToArray();
         orderTimeOutClock = tempOrderTimeOutClock1.Concat(tempOrderTimeOutClock2).ToArray();
 
-        
 
+        OrderSucess++;
 
     }
 

@@ -14,6 +14,6 @@ public class UIScore : MonoBehaviour
 
     void FixedUpdate()
     {
-        text.text = GameManager.Instance.Score + " / 2500";
+        text.text = GameManager.Instance.Score + "";
     }
 }

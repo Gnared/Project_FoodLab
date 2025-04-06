@@ -19,7 +19,6 @@ public class ScenceChange : MonoBehaviour
     }
     void QuitGame()
     {
-        UnityEditor.EditorApplication.isPlaying = false;
         Application.Quit();
     }
 }

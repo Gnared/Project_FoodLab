@@ -8,7 +8,6 @@ public class Changer : MonoBehaviour, IStation
 
     public HUD[] HUDs;
 
-
     public Color[][] palletes;
 
     public Color[] pallete1;
@@ -50,7 +49,7 @@ public class Changer : MonoBehaviour, IStation
 
     public void Give(PlayerController taker)
     {
-        if (outputResult != null && (state == EMachineState.Finish || state == EMachineState.Normal))
+        if (state == EMachineState.Finish )
         {
             var item = Instantiate(ItemManager.Instance.GetPrefabFromID(outputResult));
             item.GetComponent<IItem>().Grabbed(taker.gameObject);
@@ -71,9 +70,6 @@ public class Changer : MonoBehaviour, IStation
     {
         if (state == EMachineState.Normal)
         {
-
-
-
             foreach (var type in takeTypeList)
             {
                 if (item.Type == type)
@@ -99,29 +95,36 @@ public class Changer : MonoBehaviour, IStation
 
     private void Update()
     {
+
         if (state == EMachineState.Normal)
         {
-            for (int i = 0; i < HUDs.Length; i++)
-            {
-                if (containItemId == "")
-                {
-                    HUDs[i].color = palletes[i][0];
-                }
-                else
-                {
-                    HUDs[i].color = palletes[i][1];
-                }
 
-            }
-
-            outputResult = recipeResult[0];
             if (containItemId != null)
             {
                 state = EMachineState.Working;
             }
         }
+
+        for (int i = 0; i < HUDs.Length; i++)
+        {
+            if (containItemId == null)
+            {
+                HUDs[i].color = palletes[i][0];
+            }
+            else
+            {
+
+                HUDs[i].color = palletes[i][1];
+            }
+
+        }
         if (state == EMachineState.Working)
         {
+            for (int i = 0; i < HUDs.Length; i++)
+            {
+                HUDs[i].isFlickering = true;
+            }
+
             if (activationTimer < activationTime)
             {
                 activationTimer += Time.deltaTime;
@@ -133,12 +136,20 @@ public class Changer : MonoBehaviour, IStation
                 if (outputResult != null)
                 {
                     state = EMachineState.Finish;
+                    for (int i = 0; i < HUDs.Length; i++)
+                    {
+                        HUDs[i].isFlickering = false;
+                    }
                     GameManager.Instance.SFXPlay(null, 1);
 
                 }
                 else
                 {
                     state = EMachineState.Broken;
+                    for (int i = 0; i < HUDs.Length; i++)
+                    {
+                        HUDs[i].isFlickering = false;
+                    }
                     GameManager.Instance.SFXPlay(null, 0);
                 }
                 containItemId = null;
